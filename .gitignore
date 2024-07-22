@@ -1,0 +1,15 @@
+# Ignoriere Python Bytecode-Dateien
+__pycache__/
+*.pyc
+
+# Ignoriere virtuelle Umgebungen
+venv/
+env/
+
+# Ignoriere IDE-Konfigurationsdateien
+.vscode/
+.idea/
+
+# Ignoriere andere temporäre oder log-Dateien
+*.log
+*.tmp
