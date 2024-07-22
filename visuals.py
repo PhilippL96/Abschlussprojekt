@@ -9,7 +9,7 @@ from scraper import scrape_reviews
 
 def create_histplot(df):
     df_sorted = df.sort_values(by='ratings').reset_index(drop=True)
-    plt.figure(figsize=(10,6))
+    plt.figure(figsize=(10,4))
     sns.histplot(x=df_sorted['ratings'], kde=True)
     plt.title('Verteilung der Bewertungen')
     plt.xlabel('Sternebewertung')
@@ -29,7 +29,7 @@ def create_lineplot(df):
     
     df_sorted = df_grouped.sort_values(by='date', ascending=True).reset_index(drop=True)
     
-    plt.figure(figsize=(10,6))
+    plt.figure(figsize=(10,4))
     sns.lineplot(x='date', y='count', data=df_sorted)
     plt.title('Bewertungen über die Zeit')
     plt.xlabel('Datum')
