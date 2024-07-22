@@ -38,7 +38,7 @@ def create_lineplot(df):
 
     ax = plt.gca()
     ax.xaxis.set_major_locator(MaxNLocator(nbins=10))
-    ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
 
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
 
