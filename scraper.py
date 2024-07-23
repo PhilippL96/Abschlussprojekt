@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 import json
-from pprint import pprint
 from datetime import datetime
 
 
