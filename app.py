@@ -16,10 +16,15 @@ else:
     eng = False
 
 df = scrape_reviews(company, pagecount, eng)
-hist = create_histplot(df)
-line = create_lineplot(df)
 
-with col1:
-    st.markdown(f'#### Bewertungsübersicht für {company}:')
-    st.pyplot(create_histplot(df))
-    st.pyplot(create_lineplot(df))
+if df is not None:
+    hist = create_histplot(df)
+    line = create_lineplot(df)
+
+    with col1:
+        st.markdown(f'#### Bewertungsübersicht für {company}:')
+        st.pyplot(create_histplot(df))
+        st.pyplot(create_lineplot(df))
+
+else:
+    st.markdown(f'# {company} wurde nicht gefunden!')

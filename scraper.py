@@ -12,8 +12,12 @@ def scrape_reviews(company, pagecount, english = False):
         base_url = 'https://www.trustpilot.com/review/'
     else:
         base_url = 'https://de.trustpilot.com/review/'
+    company_url = base_url+company
+    test_res =requests.get(company_url)
+    if test_res.status_code != 200:
+        return None
     for i in range(1,pagecount+1):
-        url = base_url+company+'?page='+str(i)
+        url = company_url+'?page='+str(i)
         response = requests.get(url)
         if response.status_code != 200:
             print('Keine weitere Seite gefunden.')
