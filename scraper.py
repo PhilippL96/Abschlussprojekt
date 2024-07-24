@@ -45,4 +45,5 @@ def scrape_reviews(company, pagecount, english = False):
                     df = pd.concat([df, review_df], axis=0, ignore_index=True)
             else:
                 print("Kein <script> Tag mit den gewünschten JSON-Daten gefunden.")
+    df['ratings'] = pd.to_numeric(df['ratings'], errors='coerce')
     return df
