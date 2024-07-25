@@ -15,7 +15,14 @@ if english == 'Ja':
 else:
     eng = False
 
-df = scrape_reviews(company, pagecount, eng)
+if 'df' not in st.session_state or st.session_state.company != company or st.session_state.pagecount != pagecount or st.session_state.eng != eng:
+    df = scrape_reviews(company, pagecount, eng)
+    st.session_state.df = df
+    st.session_state.company = company
+    st.session_state.pagecount = pagecount
+    st.session_state.eng = eng
+else:
+    df = st.session_state.df
 
 if df is not None:
     col1, col2 = st.columns([5, 2])
@@ -34,18 +41,27 @@ if df is not None:
         else:
             if len(df) < 100:
                 st.warning('Sehr geringe Datenmenge - Ergebnisse können ungenau sein.')
-            
-            X_transformed, y, vect = preprocess_data(df)
-            model, rmse = get_best_model(X_transformed, y)
+
+            # Train model if not already done
+            if 'model' not in st.session_state or 'vect' not in st.session_state or st.session_state.df is not df:
+                X_transformed, y, vect = preprocess_data(df)
+                model, rmse = get_best_model(X_transformed, y)
+                st.session_state.model = model
+                st.session_state.rmse = rmse
+                st.session_state.vect = vect
+                st.session_state.df = df
+            else:
+                model = st.session_state.model
+                rmse = st.session_state.rmse
+                vect = st.session_state.vect
+
             st.markdown(f"Mittlere Abweichung des Models: {rmse:.2f} Sterne von der eigentlichen Bewertung")
         
             comment = st.text_input('Zu prüfenden Kommentar eingeben:')
         
-
             if comment:
                 try:
                     comment_tf = vect.transform([comment])
-                    
                     prediction = model.predict(comment_tf)
                     st.write(f'Dein Kommentar würde wahrscheinlich {prediction[0]} Sterne vergeben.')
                 except Exception as e:
