@@ -2,10 +2,9 @@ import streamlit as st
 from scraper import scrape_reviews
 from visuals import create_histplot, create_lineplot
 from ML import get_best_model, preprocess_data
-
+from BERT import train_sentiment_model, bert_predict
 
 st.header('Bewertungsanalyse')
-
 
 company = st.sidebar.text_input('Die Bewertungen welches/welcher Unternehmens/App/Website willst du analysieren?', value='data-science-institute.de', help='Bitte achte darauf, den korrekten Namen der zugehörigen Website anzugeben.')
 pagecount = st.sidebar.slider('Wie viele Seiten Bewertungen möchtest du scrapen?', min_value=1, max_value=500, value=10, help='Je mehr Seiten du scrapest, desto präziser ist die Analyse - allerdings dauert sie dann auch länger.')
@@ -35,7 +34,7 @@ if df is not None:
         st.pyplot(create_lineplot(df))
 
     with col2:
-        st.markdown(f'#### Sternepredictor')
+        st.markdown('#### Sternepredictor')
         if len(df) < 50:
             st.warning('Datenmenge zu gering für ein sinnvolles Modell!')
         else:
@@ -66,7 +65,6 @@ if df is not None:
                     st.write(f'Dein Kommentar würde wahrscheinlich {prediction[0]} Sterne vergeben.')
                 except Exception as e:
                     st.error(f"Ein Fehler ist aufgetreten: {e}")
-
 
 else:
     st.markdown(f'# {company} wurde nicht gefunden!')

@@ -1,17 +1,14 @@
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.pipeline import Pipeline
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import classification_report, mean_squared_error
-import streamlit as st
+from sklearn.metrics import mean_squared_error
 import numpy as np
 
 def preprocess_data(df):
     X = df['reviews']
     y = df['ratings']
     
-    # Vektorisiere die Daten
     vectorizer = CountVectorizer()
     X_transformed = vectorizer.fit_transform(X)
     
@@ -20,7 +17,6 @@ def preprocess_data(df):
 def get_best_model(X_transformed, y):
     X_train, X_test, y_train, y_test = train_test_split(X_transformed, y, test_size=0.2, random_state=42)
 
-    # Parameter für GridSearchCV festlegen
     param_grid = {
         'alpha': [0.1, 1, 10]
     }
