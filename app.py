@@ -1,10 +1,10 @@
 import streamlit as st
 from scraper import scrape_reviews
-from visuals import create_histplot, create_lineplot
+from visuals import create_histplot, create_lineplot, create_wordcloud
 from ML import get_best_model, preprocess_data
-from BERT import train_sentiment_model, bert_predict
 
 st.header('Bewertungsanalyse')
+st.sidebar.title('Parameter bestimmen')
 
 company = st.sidebar.text_input('Die Bewertungen welches/welcher Unternehmens/App/Website willst du analysieren?', value='data-science-institute.de', help='Bitte achte darauf, den korrekten Namen der zugehörigen Website anzugeben.')
 pagecount = st.sidebar.slider('Wie viele Seiten Bewertungen möchtest du scrapen?', min_value=1, max_value=500, value=10, help='Je mehr Seiten du scrapest, desto präziser ist die Analyse - allerdings dauert sie dann auch länger.')
@@ -27,11 +27,14 @@ if df is not None:
     col1, col2 = st.columns([5, 2])
     hist = create_histplot(df)
     line = create_lineplot(df)
+    word_cloud = create_wordcloud(df, eng, company)
 
     with col1:
         st.markdown(f'#### Bewertungsübersicht für {company}:')
-        st.pyplot(create_histplot(df))
-        st.pyplot(create_lineplot(df))
+        st.pyplot(hist)
+        st.pyplot(line)
+        st.image(word_cloud, use_column_width=True)
+
 
     with col2:
         st.markdown('#### Sternepredictor')
