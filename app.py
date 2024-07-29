@@ -2,6 +2,7 @@ import streamlit as st
 from scraper import scrape_reviews
 from visuals import create_histplot, create_lineplot, create_wordcloud
 from ML import get_best_model, preprocess_data
+import pandas as pd
 
 st.header('Bewertungsanalyse')
 st.sidebar.title('Parameter bestimmen')
@@ -21,14 +22,19 @@ def click_scrape():
 scrape = st.sidebar.button('Starte Scraping', on_click=click_scrape)
 
 if st.session_state.scrape_button_clicked:
-    if 'df' not in st.session_state or st.session_state.company != company or st.session_state.pagecount != pagecount or st.session_state.eng != eng:
-        df = scrape_reviews(company, pagecount, eng)
-        st.session_state.df = df
-        st.session_state.company = company
-        st.session_state.pagecount = pagecount
-        st.session_state.eng = eng
+    new_df = scrape_reviews(company, pagecount, eng)
+    if 'df' in st.session_state:
+        st.session_state.df = pd.concat([st.session_state.df, new_df]).drop_duplicates().reset_index(drop=True)
     else:
-        df = st.session_state.df
+        st.session_state.df = new_df
+    if 'company' not in st.session_state:
+        st.session_state.company = []
+    if new_df is not None:
+        st.session_state.company.append(company)
+    st.session_state.pagecount = pagecount
+    st.session_state.eng = eng
+
+    df = st.session_state.get('df', pd.DataFrame())
 
     if df is not None:
         col1, col2 = st.columns([5, 2])
@@ -37,13 +43,17 @@ if st.session_state.scrape_button_clicked:
         word_cloud = create_wordcloud(df, eng, company)
 
         with col1:
-            st.markdown(f'#### Bewertungsübersicht für {company}:')
+            company_string = ', '.join(st.session_state.company)
+            st.markdown(f'#### Bewertungsübersicht für {company_string}:')
             st.pyplot(hist)
             st.pyplot(line)
             st.image(word_cloud, use_column_width=True)
 
 
         with col2:
+            st.markdown('#### Dataframe')
+            st.dataframe(df, height=300)
+            st.write(f'Samplegröße: {len(df)}')
             st.markdown('#### Sternepredictor')
             if 'run_model_clicked' not in st.session_state:
                 st.session_state.run_model_clicked = False
