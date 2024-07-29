@@ -45,5 +45,7 @@ def scrape_reviews(company, pagecount, english=False):
         df = pd.concat([df, review_df], axis=0, ignore_index=True)
 
     df['ratings'] = pd.to_numeric(df['ratings'], errors='coerce')
+    df['company'] = company
     return df
 
+print(scrape_reviews("hellofresh.de", 1))

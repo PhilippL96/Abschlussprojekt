@@ -13,3 +13,6 @@ env/
 # Ignoriere andere temporäre oder log-Dateien
 *.log
 *.tmp
+
+# Ignoriere spezifische Dateien
+test_app.py
