@@ -131,7 +131,7 @@ def create_star_heatmap(df):
     ax = sns.heatmap(heatmap_data_percent, annot=True, fmt='.1f', cmap='coolwarm', linewidths=0.5)
 
     plt.xlabel('Sternebewertungen')
-    plt.ylabel('Unternehmen/App/Website')
+    plt.ylabel('Website')
     plt.yticks(rotation=0)
 
     fig = plt.gcf()  # Get the current figure
