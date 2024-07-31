@@ -87,7 +87,14 @@ def create_comparing_barplot(df):
 
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(x='company', y='ratings', data=grouped_df)
-
+    # Hinzufügen der Durchschnittsbewertungen auf den Balken
+    for p in ax.patches:
+        height = p.get_height()
+        ax.annotate(f'{height:.2f}',  # Formatierung der Bewertung auf 2 Dezimalstellen
+                    (p.get_x() + p.get_width() / 2., height),  # Positionierung der Annotation
+                    ha='center', va='center',  # Horizontale und vertikale Ausrichtung
+                    xytext=(0, 5),  # Offset für die Textposition
+                    textcoords='offset points')
     plt.xlabel('Unternehmen/App/Website')
     plt.ylabel('Durchschnittsbewertung')
     plt.grid(True)
