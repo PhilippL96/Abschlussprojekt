@@ -82,6 +82,7 @@ if not df.empty and 'company' in df.columns:
     tab1, tab2, tab3 = st.tabs(["Visualisierungen", "Vergleichende Visualisierungen", "Daten und Sternepredictor"])
 
     with tab1:
+        st.markdown('### Einzelvisualisierungen')
         for e in range(len(st.session_state.company)):
             st.markdown(f'#### Bewertungsübersicht für {st.session_state.company[e]}:')
             st.write('Verteilung der Bewertungen:')
@@ -91,6 +92,9 @@ if not df.empty and 'company' in df.columns:
             st.write('Am häufigsten verwendete Begriffe in den Bewertungen:')
             st.image(st.session_state.visuals['word_cloud_list'][e], use_column_width=True)
             st.write('\n\n')
+            
+    with tab2:
+            st.markdown('### Vergleichende Visualisierungen')
 
     with tab3:
         st.markdown('#### Dataframe')
@@ -100,3 +104,38 @@ if not df.empty and 'company' in df.columns:
 
         if 'run_model_clicked' not in st.session_state:
             st.session_state.run_model_clicked = False
+
+        def click_run_model():
+            st.session_state.run_model_clicked = not st.session_state.run_model_clicked
+
+        run_model = st.button('Model trainieren', on_click=click_run_model)
+
+        if st.session_state.run_model_clicked:
+            if len(df) < 50:
+                st.warning('Datenmenge zu gering für ein sinnvolles Modell!')
+            else:
+                if len(df) < 1000:
+                    st.warning('Sehr geringe Datenmenge - Ergebnisse können ungenau sein.')
+
+                # Train model with the full DataFrame
+                X_transformed, y, vect = preprocess_data(df)
+                model, rmse = get_best_model(X_transformed, y)
+                st.session_state.model = model
+                st.session_state.rmse = rmse
+                st.session_state.vect = vect
+                st.session_state.df = df
+
+                st.markdown(f"Mittlere Abweichung des Models: {rmse:.2f} Sterne von der eigentlichen Bewertung")
+            
+                comment = st.text_input('Zu prüfenden Kommentar eingeben:')
+            
+                if comment:
+                    try:
+                        comment_tf = vect.transform([comment])
+                        prediction = model.predict(comment_tf)
+                        st.write(f'Dein Kommentar würde wahrscheinlich {prediction[0]} Sterne vergeben.')
+                    except Exception as e:
+                        st.error(f"Ein Fehler ist aufgetreten: {e}")
+
+else:
+    st.markdown(f'# Noch keine Daten vorhanden!')

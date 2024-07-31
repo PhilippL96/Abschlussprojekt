@@ -79,3 +79,20 @@ def create_wordcloud(df, english, name):
     plt.close()
     buf.seek(0)
     return buf
+
+
+
+def create_comparing_barplot(df):
+    grouped_df = df.groupby('company', as_index=False)['ratings'].mean()
+
+    plt.figure(figsize=(10, 6))
+    ax = sns.barplot(x='company', y='ratings', data=grouped_df)
+
+    plt.xlabel('Unternehmen/App/Website')
+    plt.ylabel('Durchschnittsbewertung')
+    plt.title('Durchschnittliche Bewertungen nach Unternehmen/App/Website')
+    plt.grid(True)
+
+    fig = plt.gcf()
+    plt.close()
+    return fig
