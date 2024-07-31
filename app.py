@@ -37,18 +37,16 @@ if st.session_state.scrape_button_clicked:
     new_df = scrape_reviews(company, pagecount, eng)
 
     if new_df is not None and not new_df.empty and 'company' in new_df.columns:
+        new_df['review_id'] = new_df.apply(lambda row: hash((row['reviews'], row['ratings'], row['date'], row['company'])), axis=1)
+        
         if 'df' in st.session_state:
             st.session_state.df = pd.concat([st.session_state.df, new_df]).drop_duplicates(subset=['review_id']).reset_index(drop=True)
         else:
             st.session_state.df = new_df
-        
+
         if 'company' not in st.session_state:
             st.session_state.company = []
-        if company not in st.session_state.company:
-            st.session_state.company.append(company)
-
-        st.session_state.pagecount = pagecount
-        st.session_state.eng = eng
+        st.session_state.company.append(company)
 
     else:
         st.error('Unbekannte Website.')
@@ -124,7 +122,7 @@ if not df.empty and 'company' in df.columns:
         
         with tab3:
             st.markdown('#### Dataframe')
-            st.dataframe(filtered_df, height=300)
+            st.dataframe(filtered_df.drop(['review_id'], axis=1), height=300)
             st.write(f'Samplegröße: {len(filtered_df)}')
             st.markdown('#### Sternepredictor')
 
