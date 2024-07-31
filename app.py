@@ -1,6 +1,6 @@
 import streamlit as st
 from scraper import scrape_reviews
-from visuals import create_histplot, create_lineplot, create_wordcloud
+from visuals import create_histplot, create_lineplot, create_wordcloud, create_comparing_barplot, create_comparing_countplot, create_star_heatmap, create_comparing_lineplot
 from ML import get_best_model, preprocess_data
 import pandas as pd
 
@@ -79,23 +79,55 @@ if not df.empty and 'company' in df.columns:
     if 'word_cloud_list' not in st.session_state.visuals or len(st.session_state.visuals['word_cloud_list']) != len(df_list):
         st.session_state.visuals['word_cloud_list'] = [create_wordcloud(x, eng, company) for x in df_list]
 
+    # Erstelle den Barplot direkt vor der Anzeige
+    comp_barplot = create_comparing_barplot(df)
+    comp_countplot = create_comparing_countplot(df)
+    comp_lineplot = create_comparing_lineplot(df)
+    star_heatmap = create_star_heatmap(df)
+
+
     tab1, tab2, tab3 = st.tabs(["Visualisierungen", "Vergleichende Visualisierungen", "Daten und Sternepredictor"])
 
     with tab1:
         st.markdown('### Einzelvisualisierungen')
+        st.write('')
+        st.write('')
         for e in range(len(st.session_state.company)):
             st.markdown(f'#### Bewertungsübersicht für {st.session_state.company[e]}:')
+            st.write('')
             st.write('Verteilung der Bewertungen:')
             st.pyplot(st.session_state.visuals['histlist'][e])
+            st.write('')
+            st.write('')
             st.write('Anzahl Bewertungen über die Zeit:')
             st.pyplot(st.session_state.visuals['linelist'][e])
+            st.write('')
+            st.write('')
             st.write('Am häufigsten verwendete Begriffe in den Bewertungen:')
             st.image(st.session_state.visuals['word_cloud_list'][e], use_column_width=True)
-            st.write('\n\n')
-            
-    with tab2:
-            st.markdown('### Vergleichende Visualisierungen')
+            st.write('')
+            st.write('')
+            st.write('')
+            st.write('')
 
+
+    with tab2:
+        st.markdown('### Vergleichende Visualisierungen')
+        st.write('Durchschnittliche Sternebewertungen:')
+        st.pyplot(comp_barplot)
+        st.write('')
+        st.write('')
+        st.write('Anzahl berücksichtigter Sternebewertungen:')
+        st.pyplot(comp_countplot)
+        st.write('')
+        st.write('')
+        st.write('Anzahl Bewertungen über die Zeit')
+        st.pyplot(comp_lineplot)
+        st.write('')
+        st.write('')
+        st.write('Verteilung der Sternebewertungen in Prozent:')
+        st.pyplot(star_heatmap)
+        
     with tab3:
         st.markdown('#### Dataframe')
         st.dataframe(df, height=300)

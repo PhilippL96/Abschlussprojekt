@@ -24,7 +24,7 @@ def create_histplot(df):
 
 
 def create_lineplot(df):
-    df['date'] = pd.to_datetime(df['date'])
+    df.loc[:, 'date'] = pd.to_datetime(df['date'])
     
     df_grouped = df.groupby(['date', 'ratings']).size().reset_index(name='count')
     
@@ -90,9 +90,70 @@ def create_comparing_barplot(df):
 
     plt.xlabel('Unternehmen/App/Website')
     plt.ylabel('Durchschnittsbewertung')
-    plt.title('Durchschnittliche Bewertungen nach Unternehmen/App/Website')
     plt.grid(True)
 
+    fig = plt.gcf()
+    plt.close()
+    return fig
+
+def create_comparing_countplot(df):
+    grouped_df = df.groupby('company', as_index=False)['ratings'].count()
+
+    plt.figure(figsize=(10, 6))
+    ax = sns.barplot(x='company', y='ratings', data=grouped_df)
+
+    plt.xlabel('Unternehmen/App/Website')
+    plt.ylabel('Durchschnittsbewertung')
+    plt.grid(True)
+
+    fig = plt.gcf()
+    plt.close()
+    return fig
+
+def create_star_heatmap(df):
+    # Group by company and ratings to count occurrences of each rating per company
+    heatmap_data = df.groupby(['company', 'ratings']).size().unstack(fill_value=0)
+
+    # Convert counts to percentages relative to the total number of reviews per company
+    heatmap_data_percent = heatmap_data.div(heatmap_data.sum(axis=1), axis=0) * 100
+
+    # Sort the companies by the sum of their ratings counts (optional, for better visualization)
+    heatmap_data_percent = heatmap_data_percent.loc[heatmap_data.sum(axis=1).sort_values(ascending=False).index]
+
+    plt.figure(figsize=(10, len(heatmap_data_percent) * 0.5))
+    ax = sns.heatmap(heatmap_data_percent, annot=True, fmt='.1f', cmap='coolwarm', linewidths=0.5)
+
+    plt.xlabel('Sternebewertungen')
+    plt.ylabel('Unternehmen/App/Website')
+    plt.yticks(rotation=0)
+
+    fig = plt.gcf()  # Get the current figure
+    plt.close()  # Close the plot to prevent it from displaying immediately
+    return fig
+
+
+def create_comparing_lineplot(df):
+    df.loc[:, 'date'] = pd.to_datetime(df['date'])
+    
+    df_grouped = df.groupby(['date', 'company']).size().reset_index(name='count')
+    
+    df_sorted = df_grouped.sort_values(by='date', ascending=True).reset_index(drop=True)
+    
+    plt.figure(figsize=(10,4))
+    sns.lineplot(x='date', y='count', data=df_sorted, hue='company')
+    plt.xlabel('Datum')
+    plt.ylabel('Anzahl der Bewertungen')
+    plt.grid(True)
+
+    ax = plt.gca()
+    ax.xaxis.set_major_locator(MaxNLocator(nbins=10))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+
+
+    plt.xticks(rotation=45)
+    
     fig = plt.gcf()
     plt.close()
     return fig
