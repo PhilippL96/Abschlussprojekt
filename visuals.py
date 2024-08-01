@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -10,7 +9,7 @@ import io
 def create_histplot(df):
     df_sorted = df.sort_values(by='ratings').reset_index(drop=True)
     plt.figure(figsize=(10,4))
-    sns.histplot(x=df_sorted['ratings'], kde=True)
+    sns.histplot(x=df_sorted['ratings'], kde=False)
     plt.xlabel('Sternebewertung')
     plt.ylabel('Anzahl')
     plt.grid(True)
