@@ -86,13 +86,13 @@ def create_comparing_barplot(df):
 
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(x='company', y='ratings', data=grouped_df)
-    # Hinzufügen der Durchschnittsbewertungen auf den Balken
+    
     for p in ax.patches:
         height = p.get_height()
-        ax.annotate(f'{height:.2f}',  # Formatierung der Bewertung auf 2 Dezimalstellen
-                    (p.get_x() + p.get_width() / 2., height),  # Positionierung der Annotation
-                    ha='center', va='center',  # Horizontale und vertikale Ausrichtung
-                    xytext=(0, 5),  # Offset für die Textposition
+        ax.annotate(f'{height:.2f}',
+                    (p.get_x() + p.get_width() / 2., height), 
+                    ha='center', va='center', 
+                    xytext=(0, 5), 
                     textcoords='offset points')
     plt.xlabel('Unternehmen/App/Website')
     plt.ylabel('Durchschnittsbewertung')
@@ -117,13 +117,10 @@ def create_comparing_countplot(df):
     return fig
 
 def create_star_heatmap(df):
-    # Group by company and ratings to count occurrences of each rating per company
     heatmap_data = df.groupby(['company', 'ratings']).size().unstack(fill_value=0)
 
-    # Convert counts to percentages relative to the total number of reviews per company
     heatmap_data_percent = heatmap_data.div(heatmap_data.sum(axis=1), axis=0) * 100
 
-    # Sort the companies by the sum of their ratings counts (optional, for better visualization)
     heatmap_data_percent = heatmap_data_percent.loc[heatmap_data.sum(axis=1).sort_values(ascending=False).index]
 
     plt.figure(figsize=(10, len(heatmap_data_percent) * 0.5))
@@ -133,8 +130,8 @@ def create_star_heatmap(df):
     plt.ylabel('Website')
     plt.yticks(rotation=0)
 
-    fig = plt.gcf()  # Get the current figure
-    plt.close()  # Close the plot to prevent it from displaying immediately
+    fig = plt.gcf()
+    plt.close() 
     return fig
 
 
