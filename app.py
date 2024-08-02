@@ -4,7 +4,7 @@ from visuals import create_histplot, create_lineplot, create_wordcloud, create_c
 from ML import get_best_model, preprocess_data
 import pandas as pd
 
-st.header('Bewertungsanalyse')
+st.header('Trustpilot Bewertungsanalyse')
 st.markdown('##### Mit dieser App kannst du ganz einfach Bewertungen von von dir ausgewählten Unternehmen von Trustpilot laden und diese miteinander vergleichen. Außerdem kannst du mit den ausgewählten Bewertungen ein Modell trainieren, mit dessen Hilfe du anschließend für eigens eingegebene Rezensionen den Sternescore vorhersagen lassen kannst.')
 st.sidebar.title('Parameter bestimmen')
 
