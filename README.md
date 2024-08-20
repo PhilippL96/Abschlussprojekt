@@ -12,4 +12,4 @@ Diese Streamlit App ermöglicht es Benutzern, Bewertungen von Unternehmen auf Tr
 
 ## Installation und Nutzung
 - Installiere die benötigten Python-Abhängigkeiten mit `pip install -r requirements.txt`.
-- Starte die Streamlit App mit dem Befehl `streamlit run Predicter_App.py`.
+- Starte die Streamlit App mit dem Befehl `streamlit run app.py`.
