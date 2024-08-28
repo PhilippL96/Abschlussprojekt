@@ -17,7 +17,7 @@ Diese Streamlit App ermöglicht es Benutzern, Bewertungen von Unternehmen auf [T
 - **ML.py**: Entält Funktionen, um
     1. die Daten für das Machine Learning vorzubereiten: Nimmt Dataframe entgegen, liefert vektorisiertes X, y und einen trainierten Vectorizer zurück.
     2. das Modell zu trainieren: Nimmt X und y entgegen, liefert bestes Modell und RMSE als Fehlerindikator zurück.
-- - **app.py**: Setzt die Funktionen logisch in einer Streamlit-App zusammen.
+- **app.py**: Setzt die Funktionen logisch in einer Streamlit-App zusammen.
 
 ## Installation und Nutzung
 - Installiere die benötigten Python-Abhängigkeiten mit `pip install -r requirements.txt`.
