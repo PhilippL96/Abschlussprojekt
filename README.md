@@ -2,7 +2,7 @@
 
 ## Projektübersicht
 
-Diese Streamlit App ermöglicht es Benutzern, Bewertungen von Unternehmen auf Trustpilot zu scrapen, Visualisierungen der Bewertungen anzuzeigen und in Bezug auf die eingegebenen Unternehmen eine Sternebewertung für einen eingegebenen Kommentar mittels Machine Learning zu ermitteln.
+Diese Streamlit App ermöglicht es Benutzern, Bewertungen von Unternehmen auf Trustpilot zu scrapen, Visualisierungen der Bewertungen anzuzeigen und in Bezug auf die eingegebenen Unternehmen eine Sternebewertung für einen eingegebenen Kommentar mittels Machine Learning zu ermitteln. Hierbei handelt es sich um mein Abschlussprojekt im Rahmen eines Data-Science-Kompaktkurses.
 
 ## Funktionen
 

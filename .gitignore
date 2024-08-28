@@ -14,11 +14,6 @@ env/
 *.log
 *.tmp
 
-# Ignoriere spezifische Dateien
-test_app.py
-test_app_2.py
-test.ipynb
-
 # Ignoriere weitere Dateien
 *.csv
 *.docx
